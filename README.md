@@ -10,6 +10,8 @@ Original source links:
 
 Ruffle does not currently implement the arbitrary JS calls that the API requires. Instead, you must insert the functions described in replace.js to allow it to function properly, and to patch an issue with Kong incorrectly finding compataible divs.
 
+Function must run inside the game's iframe.
+
 ## Flash API Modifications
 
 Modify using JPEXS
@@ -32,3 +34,6 @@ AS3 api requires `?debug_level=4` in the query params for the page.
 
 ### User Script
 
+Script link: https://greasyfork.org/en/scripts/494088-kong-flash-api-patcher
+
+Must run on top of Kongregate flash games fixer by Matrix: https://greasyfork.org/en/scripts/438325-kongregate-flash-games-fixer
