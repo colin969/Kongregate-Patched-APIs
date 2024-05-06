@@ -1,16 +1,26 @@
 # Kongregate Patched APIs
 
-Contains a set of patched Kongregate APIs designed to allow functionality with the offical Website
+Contains a set of patched Kongregate APIs designed to allow functionality with the offical Website, as well as instructions to create them.
+
+Designed to run on top of Kongregate flash games fixer by Matrix, since that fixes flashvars being decoded properly when given to Ruffle. When run without, it will attempt to establish a connection to Kongregate with incorrectly formatted parameters and fail.
+
+Matrix's flashvar fixing script: https://greasyfork.org/en/scripts/438325-kongregate-flash-games-fixer
 
 Original source links:
 - AS2: http://api.kongregate.com/flash/API_f99fa1a5a43e48224ae2c0177064456d.swf
 - AS3: https://chat.kongregate.com/flash/API_AS3_d43c4b859e74432475c1627346078677.swf
 
-## JavaScript Modifications
+## Modification Details
 
-Ruffle does not currently implement the arbitrary JS calls that the API requires. Instead, you must insert the functions described in replace.js to allow it to function properly, and to patch an issue with Kong incorrectly finding compataible divs.
+Ruffle does not currently implement the `ExternalInterface.call` functionality to run arbitrary JavaScript that the Flash API uses, and won't in the forseeable future due to security concerns.
 
-Function must run inside the game's iframe.
+This repo describes the changes needed (which can be done via JPEXS) to the Flash API swfs to use pre-defined JavaScript functions instead. `replace.js` contains these pre-defined functions, as well as a `fetch()` interceptor which will return the pre-modified API files from this repo instead of those on Kongregate's servers.
+
+The pre-defined JS functions should be loaded inside the game's frame. e.g `https://game115608.konggames.com/games/light_bringer777/learn-to-fly-2/frame/3c45607c-c718-4027-ad27-333bdd6a3473/?kongregate_host=www.kongregate.com` (Matcher `*://*.konggames.com/games/*/*/frame/*`)
+
+### Note on AS2 games
+
+AS2 games will not work on Kongregate, though I have verified the API changes work locally. Normally, the AS2 api is loaded directly and passed the game swf url via `game_swf`. Kongregate currently loads the game directly instead. API properties will not be present until this is merged either. https://github.com/ruffle-rs/ruffle/pull/16210/
 
 ## Flash API Modifications
 
@@ -28,12 +38,12 @@ Replace `com.kongregate.common.comm.external.ExternalMessageConnection L72` with
 
 ### Debug Output
 
-Pre-patched AS2 api forces debug output to level 4. I can't see a way to set it with flashvars.
+The pre-modified AS2 swf in this repo forces debug output to level 4. I can't see a way to set it with flashvars.
 
-AS3 api requires `?debug_level=4` in the query params for the page.
+AS3 api requires `debug_level=4` in the query params for the page.
 
 ### User Script
 
 Script link: https://greasyfork.org/en/scripts/494088-kong-flash-api-patcher
 
-Must run on top of Kongregate flash games fixer by Matrix: https://greasyfork.org/en/scripts/438325-kongregate-flash-games-fixer
+Designed to run on top of Kongregate flash games fixer by Matrix, since that fixes flashvars being loaded in Ruffle correctly: https://greasyfork.org/en/scripts/438325-kongregate-flash-games-fixer
