@@ -20,7 +20,11 @@ The pre-defined JS functions should be loaded inside the game's frame. e.g `http
 
 ### Note on AS2 games
 
-AS2 games will not work on Kongregate, though I have verified the API changes work locally. Normally, the AS2 api is loaded directly and passed the game swf url via `game_swf`. Kongregate currently loads the game directly instead. API properties will not be present until this is merged either. https://github.com/ruffle-rs/ruffle/pull/16210/
+AS2 games will not work on Kongregate, though I have verified the API changes work locally. 
+
+Normally, the AS2 api is loaded directly and passed the game swf url via the `game_swf` parameter. Kongregate currently loads the game directly instead, so the API never loads at all, though this would be trivial to change back.
+
+I may add changes to the script to handle this once the linked pull request is merge. Ruffle will fail to expose the API to the game properly until the behaviour added in it is available. https://github.com/ruffle-rs/ruffle/pull/16210/
 
 ## Flash API Modifications
 
